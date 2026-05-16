@@ -76,3 +76,10 @@ img.src = pixelUrl;
 img.style.cssText = 'width:1px;height:1px;opacity:0;';
 ```
 
+Any HTML renderer — Gmail included — automatically fetches whatever URL is
+in an `<img src="...">` tag and displays it as an image, rather than showing
+the raw URL as text. That's standard behavior for every image on the web.
+We just make it 1 pixel wide/tall and fully transparent, so nothing visible
+appears, while the network request (which is all we actually need) still
+fires.
+
