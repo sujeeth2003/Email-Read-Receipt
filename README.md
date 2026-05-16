@@ -62,3 +62,17 @@ That ID becomes part of the pixel's URL:
 http://<your-ip>:<port>/pixel/a3f9e21c88b7d401.png
 ```
 
+The server keeps a small JSON database mapping each ID to metadata (subject,
+recipient, timestamp, list of opens). When that specific URL is requested,
+the server knows exactly which email it belongs to.
+
+## Why it looks like a picture, not a link
+
+The extension inserts a normal HTML `<img>` tag into the Gmail compose body:
+
+```js
+const img = document.createElement('img');
+img.src = pixelUrl;
+img.style.cssText = 'width:1px;height:1px;opacity:0;';
+```
+
