@@ -94,3 +94,10 @@ node server.js
 Runs at `http://localhost:3939` by default (override with `PORT=xxxx`).
 Dashboard: `http://localhost:3939/dashboard`
 
+### 2. Make it reachable from the internet
+Either:
+- **Port forward** in your router: external port → your PC's local IP on the
+  same port the server is listening on, or
+- **Tunnel** with `ngrok http 3939` for a temporary public URL without
+  touching your router or URl of your online DB.
+
