@@ -104,3 +104,20 @@ function hookSendButtons() {
   });
 }
 
+function findSendButtonFor(bodyEl) {
+  let node = bodyEl.parentElement;
+  while (node && node !== document.body) {
+    let btn = node.querySelector('div[role="button"][data-tooltip^="Send"]');
+    if (!btn) {
+      btn = Array.from(node.querySelectorAll('div[role="button"], [aria-label]'))
+        .find(el => {
+          const label = (el.getAttribute('aria-label') || el.textContent || '').trim().toLowerCase();
+          return label === 'send' || label.startsWith('send ');
+        });
+    }
+    if (btn) return btn;
+    node = node.parentElement;
+  }
+  return null;
+}
+
