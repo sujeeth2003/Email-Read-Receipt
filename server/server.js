@@ -13,3 +13,12 @@ const fs = require('fs');
 const path = require('path');
 const notifier = require('node-notifier');
 
+const PORT = process.env.PORT || 3939;
+const DB_PATH = path.join(__dirname, 'tracking.json');
+
+// 1x1 transparent PNG bytes
+const PIXEL = Buffer.from(
+  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
+  'base64'
+);
+
