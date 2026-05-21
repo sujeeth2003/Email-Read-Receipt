@@ -24,3 +24,26 @@ function getRecipientFromCompose(composeRoot) {
   return '';
 }
 
+function makeTrackButton(bodyEl) {
+  const btn = document.createElement('div');
+  btn.textContent = '📍 Track: OFF';
+  btn.title = 'Toggle open-tracking for this email';
+  btn.style.cssText = `
+    display:inline-block; margin:6px 8px; padding:4px 10px; font-size:12px;
+    border-radius:14px; background:#eee; color:#555; cursor:pointer;
+    user-select:none; font-family:Arial,sans-serif; border:1px solid #ccc;
+  `;
+  let tracked = false;
+  btn.addEventListener('click', () => {
+    tracked = !tracked;
+    btn.textContent = tracked ? '📍 Track: ON' : '📍 Track: OFF';
+    btn.style.background = tracked ? '#d2f8d2' : '#eee';
+    btn.style.color = tracked ? '#1a7a1a' : '#555';
+    bodyEl.dataset.trackEnabled = tracked ? '1' : '0';
+    if (tracked) {
+      injectPixelIfNeeded(bodyEl);
+    }
+  });
+  return btn;
+}
+
