@@ -31,3 +31,21 @@ function loadDB() {
   }
 }
 
+function saveDB(db) {
+  fs.writeFileSync(DB_PATH, JSON.stringify(db, null, 2));
+}
+
+function send(res, code, body, headers = {}) {
+  res.writeHead(code, { 'Content-Type': 'application/json', ...headers });
+  res.end(JSON.stringify(body));
+}
+
+const server = http.createServer((req, res) => {
+  const url = new URL(req.url, `http://${req.headers.host}`);
+
+  // CORS for the extension / local dashboard
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') { res.writeHead(204); return res.end(); }
+
