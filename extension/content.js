@@ -121,3 +121,18 @@ function findSendButtonFor(bodyEl) {
   return null;
 }
 
+function processComposeWindows() {
+  const bodies = findComposeBodies();
+  console.log(`[MailTracker] found ${bodies.length} compose body element(s)`);
+
+  bodies.forEach((bodyEl) => {
+    if (PROCESSED.has(bodyEl)) return;
+
+    const sendBtn = findSendButtonFor(bodyEl);
+    if (!sendBtn) {
+      console.log('[MailTracker] send button not found yet for this compose window');
+      return; // send button not rendered yet, try again on next mutation
+    }
+
+    PROCESSED.add(bodyEl);
+
