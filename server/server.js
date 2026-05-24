@@ -91,7 +91,7 @@ const server = http.createServer((req, res) => {
       const likelyPrefetch = secondsSinceCreated < GRACE_PERIOD_SECONDS;
 
       const openEvent = {
-        time: now.toISOString(),
+        time: now.toLocaleString(),
         ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress,
         userAgent: req.headers['user-agent'] || '',
         likelyPrefetch
