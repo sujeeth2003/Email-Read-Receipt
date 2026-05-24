@@ -45,3 +45,20 @@ No third-party service, no data leaving your control.
                                    └───────────────────┘
 ```
 
+## Where the pixel comes from
+
+The image is a single, hardcoded 1x1 transparent PNG stored as base64 in
+`server.js`. It never changes — what changes per email is the **URL**, which
+includes a randomly generated ID:
+
+```js
+const id = crypto.randomBytes(8).toString('hex');
+// -> e.g. "a3f9e21c88b7d401"
+```
+
+That ID becomes part of the pixel's URL:
+
+```
+http://<your-ip>:<port>/pixel/a3f9e21c88b7d401.png
+```
+
