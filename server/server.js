@@ -88,3 +88,28 @@ const server = http.createServer((req, res) => {
       const GRACE_PERIOD_SECONDS = 60; // opens within this window are likely
                                         // Gmail's own prefetch/cache, not a real read
 
+      const likelyPrefetch = secondsSinceCreated < GRACE_PERIOD_SECONDS;
+
+      const openEvent = {
+        time: now.toISOString(),
+        ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress,
+        userAgent: req.headers['user-agent'] || '',
+        likelyPrefetch
+      };
+      db[id].opens.push(openEvent);
+      saveDB(db);
+
+      if (!likelyPrefetch) {
+        notifier.notify({
+          title: '📬 Email opened!',
+          message: `"${db[id].label}" was just opened${db[id].recipient ? ' by ' + db[id].recipient : ''}`,
+          sound: true
+        });
+        console.log(`[OPEN] ${id} - ${db[id].label} at ${openEvent.time} (ip: ${openEvent.ip})`);
+      } else {
+        console.log(`[LIKELY PREFETCH, not notifying] ${id} - ${openEvent.time} (ip: ${openEvent.ip})`);
+      }
+    } else {
+      console.log(`[UNKNOWN PIXEL HIT] ${id}`);
+    }
+
