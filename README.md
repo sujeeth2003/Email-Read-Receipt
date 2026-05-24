@@ -83,3 +83,14 @@ We just make it 1 pixel wide/tall and fully transparent, so nothing visible
 appears, while the network request (which is all we actually need) still
 fires.
 
+## Setup
+
+### 1. Start the local server
+```bash
+cd server
+npm install
+node server.js
+```
+Runs at `http://localhost:3939` by default (override with `PORT=xxxx`).
+Dashboard: `http://localhost:3939/dashboard`
+
