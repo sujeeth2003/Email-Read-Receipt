@@ -16,3 +16,32 @@ No third-party service, no data leaving your control.
    compose window. Turning it on embeds the invisible pixel into that
    specific email before you send it.
 
+## Architecture
+
+```
+ ┌────────────────────┐        ┌──────────────────────┐
+ │   Brave Extension   │        │   Local Node Server   │
+ │  (content.js runs    │──────▶│  server.js            │
+ │   inside Gmail tab)  │ fetch │  - generates unique id │
+ │                      │ /api/ │  - serves 1x1 PNG      │
+ │  Adds Track button;  │ new   │  - logs opens          │
+ │  injects <img> tag   │       │  - fires notification  │
+ │  into email body     │       │  - dashboard UI        │
+ └────────────────────┘        └───────────┬──────────┘
+                                             │ port forward
+                                             ▼
+                                   ┌───────────────────┐
+                                   │  Your router       │
+                                   │  external port →   │
+                                   │  your PC's port     │
+                                   └─────────┬─────────┘
+                                             │ internet
+                                             ▼
+                                   ┌───────────────────┐
+                                   │  Recipient opens    │
+                                   │  the email; Gmail   │
+                                   │  fetches the        │
+                                   │  <img> pixel URL     │
+                                   └───────────────────┘
+```
+
