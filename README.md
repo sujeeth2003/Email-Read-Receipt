@@ -101,3 +101,9 @@ Either:
 - **Tunnel** with `ngrok http 3939` for a temporary public URL without
   touching your router or URl of your online DB.
 
+### 3. Load the extension
+1. `brave://extensions` → enable Developer mode → **Load unpacked**
+2. Select the `extension/` folder
+3. Click the extension icon → enter your public IP + port (or ngrok URL) →
+   **Test connection** → enable → Save
+
