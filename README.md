@@ -107,3 +107,34 @@ Either:
 3. Click the extension icon → enter your public IP + port (or ngrok URL) →
    **Test connection** → enable → Save
 
+### 4. Track an email
+Open Gmail, compose or reply, click **Track: ON**, write and send as normal.
+Opens show up on the dashboard and trigger a desktop notification.
+
+## Limitations & honesty section
+
+- **Gmail proxies remote images through its own servers.** This means the
+  IP address logged for an "open" is usually Google's proxy IP, not the
+  recipient's real IP — for both you and them. IP logging is more useful
+  for non-Gmail providers that fetch images directly.
+- **Gmail (and some other clients) may prefetch/cache the image immediately
+  after sending**, before anyone has read anything. The server includes a
+  60-second grace period after sending during which opens are logged but
+  not treated as "real" — this cuts down false positives but isn't perfect.
+- **Clients that block remote images by default** (many desktop/corporate
+  clients) will never trigger the pixel even if the recipient reads the
+  email — this will falsely show as "not opened."
+- **Multiple opens** (recipient re-reading, forwarding, viewing on another
+  device) show up as multiple timestamps, not one.
+- **Security note:** forwarding a port on your home router exposes it to
+  the entire internet, not just your email recipients — anyone can hit it
+  during the window it's open. The server only returns a static image and
+  logs a line, so the practical risk is low, but only forward the port
+  while you actually intend to track something, and close the rule when
+  you're done.
+- **Privacy/legal note:** tracking email opens without disclosure is
+  restricted or requires consent in some jurisdictions (e.g. under GDPR in
+  the EU). Check your local rules before using this on real recipients.
+
+## License
+MIT — do whatever you want with it, no warranty.
