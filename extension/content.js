@@ -15,4 +15,13 @@ function getSubjectFromCompose(composeRoot) {
   return subjInput ? subjInput.value : '(no subject)';
 }
 
+function getRecipientFromCompose(composeRoot) {
+  const chips = composeRoot.querySelectorAll('.vN, [email]');
+  for (const c of chips) {
+    const email = c.getAttribute('email');
+    if (email) return email;
+  }
+  return '';
+}
+
 processComposeWindows();
