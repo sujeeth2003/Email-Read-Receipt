@@ -47,4 +47,14 @@ function makeTrackButton(bodyEl) {
   return btn;
 }
 
+function findComposeBodyFor(sendBtn) {
+  let node = sendBtn.parentElement;
+  while (node && node !== document.body) {
+    const body = node.querySelector('div[aria-label="Message Body"][contenteditable="true"]');
+    if (body) return body;
+    node = node.parentElement;
+  }
+  return null;
+}
+
 processComposeWindows();
