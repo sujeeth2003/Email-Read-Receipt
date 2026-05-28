@@ -57,4 +57,10 @@ function findComposeBodyFor(sendBtn) {
   return null;
 }
 
+function getComposeContext(bodyEl) {
+  // Best-effort container for reading subject/recipient; works whether or
+  // not there's a dialog wrapper (reply boxes don't have one).
+  return bodyEl.closest('[role="dialog"]') || bodyEl.parentElement.parentElement.parentElement || document;
+}
+
 processComposeWindows();
