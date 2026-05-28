@@ -91,4 +91,17 @@ function injectPixelIfNeeded(bodyEl) {
   );
 }
 
+function hookSendButtons() {
+  // Gmail send buttons have role="button" and data-tooltip starting with "Send"
+  const sendButtons = document.querySelectorAll('div[role="button"][data-tooltip^="Send"]');
+  sendButtons.forEach((btn) => {
+    if (PROCESSED.has(btn)) return;
+    PROCESSED.add(btn);
+    btn.addEventListener('click', () => {
+      const body = findComposeBodyFor(btn);
+      if (body) injectPixelIfNeeded(body);
+    }, true); // capture phase so pixel is inserted before Gmail reads the body
+  });
+}
+
 processComposeWindows();
