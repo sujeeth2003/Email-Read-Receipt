@@ -63,4 +63,32 @@ function getComposeContext(bodyEl) {
   return bodyEl.closest('[role="dialog"]') || bodyEl.parentElement.parentElement.parentElement || document;
 }
 
+function injectPixelIfNeeded(bodyEl) {
+  if (bodyEl.dataset.trackEnabled !== '1') return;
+  if (bodyEl.dataset.pixelInjected === '1') return; // avoid double-insert
+
+  const composeRoot = getComposeContext(bodyEl);
+  const label = getSubjectFromCompose(composeRoot);
+  const recipient = getRecipientFromCompose(composeRoot);
+
+  chrome.runtime.sendMessage(
+    { type: 'CREATE_TRACKING_PIXEL', label, recipient },
+    (resp) => {
+      if (resp && resp.ok) {
+        const img = document.createElement('img');
+        img.src = resp.pixelUrl;
+        img.width = 1;
+        img.height = 1;
+        img.style.cssText = 'width:1px;height:1px;border:0;display:block;opacity:0;';
+        img.alt = '';
+        bodyEl.appendChild(img);
+        bodyEl.dataset.pixelInjected = '1';
+        console.log('[MailTracker] pixel injected:', resp.pixelUrl);
+      } else {
+        console.warn('[MailTracker] failed to create pixel:', resp && resp.error);
+      }
+    }
+  );
+}
+
 processComposeWindows();
