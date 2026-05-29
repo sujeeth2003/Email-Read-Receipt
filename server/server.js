@@ -71,3 +71,20 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // --- list all tracked emails ---
+  if (url.pathname === '/api/opens' && req.method === 'GET') {
+    return send(res, 200, loadDB());
+  }
+
+  // --- the tracking pixel itself ---
+  const pixelMatch = url.pathname.match(/^\/pixel\/([a-f0-9]+)\.png$/);
+  if (pixelMatch && req.method === 'GET') {
+    const id = pixelMatch[1];
+    const db = loadDB();
+    if (db[id]) {
+      const now = new Date();
+      const createdAt = new Date(db[id].createdAt);
+      const secondsSinceCreated = (now - createdAt) / 1000;
+      const GRACE_PERIOD_SECONDS = 60; // opens within this window are likely
+                                        // Gmail's own prefetch/cache, not a real read
+
