@@ -136,4 +136,20 @@ function processComposeWindows() {
 
     PROCESSED.add(bodyEl);
 
+    // Insert our pill right before the send button's parent container, so it
+    // sits in the same row without depending on any generated toolbar class.
+    const anchor = sendBtn.parentElement || sendBtn;
+    if (!anchor.parentElement.querySelector('.mailtracker-btn')) {
+      const btn = makeTrackButton(bodyEl);
+      btn.classList.add('mailtracker-btn');
+      anchor.parentElement.insertBefore(btn, anchor);
+    }
+  });
+  hookSendButtons();
+}
+
+// Gmail is a SPA; observe DOM mutations to catch new compose windows
+const observer = new MutationObserver(() => processComposeWindows());
+observer.observe(document.body, { childList: true, subtree: true });
+
 processComposeWindows();
