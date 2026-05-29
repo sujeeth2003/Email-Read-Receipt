@@ -49,3 +49,25 @@ const server = http.createServer((req, res) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') { res.writeHead(204); return res.end(); }
 
+  // --- create a new tracking id ---
+  if (url.pathname === '/api/new' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => (body += chunk));
+    req.on('end', () => {
+      let meta = {};
+      try { meta = JSON.parse(body || '{}'); } catch (e) {}
+      const id = crypto.randomBytes(8).toString('hex');
+      const db = loadDB();
+      db[id] = {
+        id,
+        label: meta.label || '(no subject)',
+        recipient: meta.recipient || '',
+        createdAt: new Date().toISOString(),
+        opens: []
+      };
+      saveDB(db);
+      send(res, 200, { id });
+    });
+    return;
+  }
+
