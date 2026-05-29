@@ -22,3 +22,12 @@ const PIXEL = Buffer.from(
   'base64'
 );
 
+function loadDB() {
+  if (!fs.existsSync(DB_PATH)) return {};
+  try {
+    return JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
+  } catch (e) {
+    return {};
+  }
+}
+
