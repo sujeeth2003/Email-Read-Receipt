@@ -21,34 +21,3 @@
 <body>
   <h3>📧 Mail Open Tracker</h3>
 
-  <div class="toggle-row">
-    <label style="margin:0">Enabled</label>
-    <input type="checkbox" id="enabled">
-  </div>
-
-  <div class="row">
-    <div>
-      <label for="ip">Your public IP</label>
-      <input type="text" id="ip" placeholder="203.0.113.5">
-    </div>
-    <div style="flex:0 0 90px">
-      <label for="port">Port</label>
-      <input type="text" id="port" placeholder="3939">
-    </div>
-  </div>
-
-  <button id="test">Test connection</button>
-  <button id="save">Save</button>
-  <div class="status" id="status"></div>
-
-  <div class="hint">
-    1. Make sure <code>node server.js</code> is running on your PC and your router
-    is forwarding the port above to it.<br>
-    2. Enter your current public IP (search "what is my ip") and the port.<br>
-    3. Click "Test connection" to confirm it's reachable.<br>
-    4. Toggle "Enabled" only while you want new emails tracked.
-  </div>
-
-  <script src="popup.js"></script>
-</body>
-</html>
