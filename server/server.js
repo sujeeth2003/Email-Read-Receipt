@@ -113,3 +113,35 @@ const server = http.createServer((req, res) => {
       console.log(`[UNKNOWN PIXEL HIT] ${id}`);
     }
 
+    res.writeHead(200, {
+      'Content-Type': 'image/png',
+      'Content-Length': PIXEL.length,
+      'Cache-Control': 'no-store, no-cache, must-revalidate, private',
+      'Pragma': 'no-cache'
+    });
+    return res.end(PIXEL);
+  }
+
+  // --- simple dashboard ---
+  if (url.pathname === '/' || url.pathname === '/dashboard') {
+    const db = loadDB();
+    const rows = Object.values(db)
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .map(e => {
+        const realOpens = e.opens.filter(o => !o.likelyPrefetch);
+        const opensHtml = e.opens.map(o =>
+          `${o.time} ${o.ip ? `<span style="color:#888">(${o.ip})</span>` : ''} ${o.likelyPrefetch ? '<span style="color:#e69500">[likely prefetch]</span>' : '<b style="color:#1a7a1a">[real open]</b>'}`
+        ).join('<br>');
+        return `
+        <tr>
+          <td>${e.label}</td>
+          <td>${e.recipient}</td>
+          <td>${e.createdAt}</td>
+          <td>${realOpens.length} / ${e.opens.length}</td>
+          <td>${opensHtml || '-'}</td>
+        </tr>`;
+      }).join('');
+    const html = `<html><head><title>Mail Tracker</title>
+      <style>body{font-family:sans-serif;padding:20px}table{border-collapse:collapse;width:100%}
+      td,th{border:1px solid #ccc;padding:6px 10px;text-align:left;font-size:14px}</style>
+      <meta http-equiv="refresh" content="5"></head><body>
