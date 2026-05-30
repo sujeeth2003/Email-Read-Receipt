@@ -145,3 +145,21 @@ const server = http.createServer((req, res) => {
       <style>body{font-family:sans-serif;padding:20px}table{border-collapse:collapse;width:100%}
       td,th{border:1px solid #ccc;padding:6px 10px;text-align:left;font-size:14px}</style>
       <meta http-equiv="refresh" content="5"></head><body>
+      <h2>📬 Mail Tracker Dashboard</h2>
+      <p style="font-size:13px;color:#666">"Real opens" excludes hits in the first 60s after sending
+      (usually Gmail's own prefetch/cache, not an actual read).</p>
+      <table><tr><th>Subject/Label</th><th>Recipient</th><th>Sent</th><th>Real / Total opens</th><th>Open log</th></tr>
+      ${rows || '<tr><td colspan=5>No tracked emails yet</td></tr>'}</table>
+      </body></html>`;
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    return res.end(html);
+  }
+
+  send(res, 404, { error: 'not found' });
+});
+
+server.listen(PORT, () => {
+  console.log(`Mail tracker server running at http://localhost:${PORT}`);
+  console.log(`Dashboard: http://localhost:${PORT}/dashboard`);
+  console.log(`Now run: ngrok http ${PORT}   (to get a public URL for the pixel)`);
+});
