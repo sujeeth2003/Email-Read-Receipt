@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Mail Open Tracker",
+  "version": "1.0.0",
+  "description": "Insert an invisible tracking pixel into Gmail messages you send, and get notified when they're opened.",
+  "permissions": ["storage", "notifications"],
+  "host_permissions": ["https://mail.google.com/*", "http://*/*", "https://*/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://mail.google.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Mail Tracker settings"
+  },
+  "icons": {
+    "128": "icon.png"
+  }
+}
